@@ -11,15 +11,15 @@ import (
 	"github.com/go-jet/jet/v2/mysql"
 )
 
-var User = newUserTable("go_mysql8_development", "user", "")
+var User = newUserTable("membership", "user", "")
 
 type userTable struct {
 	mysql.Table
 
 	// Columns
-	ID   mysql.ColumnInteger
-	Name mysql.ColumnString
-	Mail mysql.ColumnString
+	ID       mysql.ColumnInteger
+	Name     mysql.ColumnString
+	Password mysql.ColumnString
 
 	AllColumns     mysql.ColumnList
 	MutableColumns mysql.ColumnList
@@ -62,18 +62,18 @@ func newUserTableImpl(schemaName, tableName, alias string) userTable {
 	var (
 		IDColumn       = mysql.IntegerColumn("id")
 		NameColumn     = mysql.StringColumn("name")
-		MailColumn     = mysql.StringColumn("mail")
-		allColumns     = mysql.ColumnList{IDColumn, NameColumn, MailColumn}
-		mutableColumns = mysql.ColumnList{IDColumn, NameColumn, MailColumn}
+		PasswordColumn = mysql.StringColumn("password")
+		allColumns     = mysql.ColumnList{IDColumn, NameColumn, PasswordColumn}
+		mutableColumns = mysql.ColumnList{IDColumn, NameColumn, PasswordColumn}
 	)
 
 	return userTable{
 		Table: mysql.NewTable(schemaName, tableName, alias, allColumns...),
 
 		//Columns
-		ID:   IDColumn,
-		Name: NameColumn,
-		Mail: MailColumn,
+		ID:       IDColumn,
+		Name:     NameColumn,
+		Password: PasswordColumn,
 
 		AllColumns:     allColumns,
 		MutableColumns: mutableColumns,

@@ -8,7 +8,8 @@
 package model
 
 type User struct {
-	ID   *int32
-	Name *string
-	Mail *string
+	ID       int32
+	Name     string
+	Password string
 }
+

@@ -17,6 +17,6 @@ services:
       MYSQL_HOST: 'db'
       MYSQL_PASSWORD: 'webpass'
       MYSQL_ROOT_PASSWORD: 'pass'
-      MYSQL_DATABASE: 'go_mysql8_development'
+      MYSQL_DATABASE: 'membership'
 volumes:
   go_path:

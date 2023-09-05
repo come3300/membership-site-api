@@ -1,31 +1,53 @@
 package database
 
 import (
-    "database/sql"
-    "fmt"
-    "os"
+	"database/sql"
+	"fmt"
+	"log"
 
-    "github.com/joho/godotenv"
-
-    _ "github.com/go-sql-driver/mysql"
+	. "go-jet-env/database/membership/table"
+	_ "github.com/go-sql-driver/mysql"
 )
 
-func Connect() *sql.DB {
-    err := godotenv.Load()
-    if err != nil {
-        fmt.Println(err.Error())
-    }
+// dbを接続するためのメソッド
 
-    user := os.Getenv("DB_USER")
-    password := os.Getenv("DB_PASSWORD")
-    host := os.Getenv("DB_HOST")
-    port := os.Getenv("DB_PORT")
-    database_name := os.Getenv("DB_DATABASE_NAME")
+func DBconect() (*sql.DB, error){
+	db, err := sql.Open("mysql", "webuser:webpass@tcp(db:3306)/go_mysql8_development")
+	if err != nil {
+		log.Fatalf("main sql.Open error err:%v", err)
+	}
+	defer db.Close()
+	fmt.Println("設定完了！")
 
-    dbconf := user + ":" + password + "@tcp(" + host + ":" + port + ")/" + database_name + "?charset=utf8mb4"
-    db, err := sql.Open("mysql", dbconf)
-    if err != nil {
-        fmt.Println(err.Error())
-    }
-    return db
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+
+	err = db.Ping()
+
+	if err != nil {
+		fmt.Println("データベース接続失敗")
+		return nil,err
+	} else {
+		fmt.Println("データベース接続成功")
+	}
+
+	rows, err :=
+		User.INSERT(User.ID, User.Name, User.Password).
+		VALUES(100, "http://www.postgresqltutorial.com", "PostgreSQL Tutorial").Exec(db)
+
+	if err != nil {
+		return nil,err
+	}
+
+	updatedCount, err := rows.RowsAffected()
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Println("ユーザーIDは重複していません")
+	fmt.Println("更新された行数:", updatedCount)
+
+    return db,nil
+
 }
