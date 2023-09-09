@@ -1,10 +1,10 @@
 package main
 
 import (
-	"go_blog/controller"
+	controller "go-jet-env/controllers"
 )
 
 func main() {
 	router := controller.GetRouter()
-	router.Run(":8080")
+	router.Run(":88")
 }

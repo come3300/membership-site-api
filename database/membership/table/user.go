@@ -18,7 +18,7 @@ type userTable struct {
 
 	// Columns
 	ID       mysql.ColumnInteger
-	Name     mysql.ColumnString
+	UserId   mysql.ColumnString
 	Password mysql.ColumnString
 
 	AllColumns     mysql.ColumnList
@@ -60,11 +60,11 @@ func newUserTable(schemaName, tableName, alias string) *UserTable {
 
 func newUserTableImpl(schemaName, tableName, alias string) userTable {
 	var (
-		IDColumn       = mysql.IntegerColumn("id")
-		NameColumn     = mysql.StringColumn("name")
-		PasswordColumn = mysql.StringColumn("password")
-		allColumns     = mysql.ColumnList{IDColumn, NameColumn, PasswordColumn}
-		mutableColumns = mysql.ColumnList{IDColumn, NameColumn, PasswordColumn}
+		IDColumn       = mysql.IntegerColumn("ID")
+		UserIdColumn   = mysql.StringColumn("UserId")
+		PasswordColumn = mysql.StringColumn("Password")
+		allColumns     = mysql.ColumnList{IDColumn, UserIdColumn, PasswordColumn}
+		mutableColumns = mysql.ColumnList{UserIdColumn, PasswordColumn}
 	)
 
 	return userTable{
@@ -72,7 +72,7 @@ func newUserTableImpl(schemaName, tableName, alias string) userTable {
 
 		//Columns
 		ID:       IDColumn,
-		Name:     NameColumn,
+		UserId:   UserIdColumn,
 		Password: PasswordColumn,
 
 		AllColumns:     allColumns,

@@ -6,13 +6,16 @@ import (
 	"log"
 
 	. "go-jet-env/database/membership/table"
+
 	_ "github.com/go-sql-driver/mysql"
 )
 
+// TODO テーブルを再編成
+
 // dbを接続するためのメソッド
 
-func DBconect() (*sql.DB, error){
-	db, err := sql.Open("mysql", "webuser:webpass@tcp(db:3306)/go_mysql8_development")
+func DBconect() (*sql.DB, error) {
+	db, err := sql.Open("mysql", "webuser:webpass@tcp(db:3306)/membership")
 	if err != nil {
 		log.Fatalf("main sql.Open error err:%v", err)
 	}
@@ -27,27 +30,11 @@ func DBconect() (*sql.DB, error){
 
 	if err != nil {
 		fmt.Println("データベース接続失敗")
-		return nil,err
+		return nil, err
 	} else {
 		fmt.Println("データベース接続成功")
 	}
 
-	rows, err :=
-		User.INSERT(User.ID, User.Name, User.Password).
-		VALUES(100, "http://www.postgresqltutorial.com", "PostgreSQL Tutorial").Exec(db)
-
-	if err != nil {
-		return nil,err
-	}
-
-	updatedCount, err := rows.RowsAffected()
-	if err != nil {
-		panic(err)
-	}
-
-	fmt.Println("ユーザーIDは重複していません")
-	fmt.Println("更新された行数:", updatedCount)
-
-    return db,nil
+	return db, nil
 
 }

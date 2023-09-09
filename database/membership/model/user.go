@@ -8,8 +8,7 @@
 package model
 
 type User struct {
-	ID       int32
-	Name     string
+	ID       int32 `sql:"primary_key"`
+	UserId   string
 	Password string
 }
-
