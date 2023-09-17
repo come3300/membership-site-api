@@ -3,6 +3,7 @@ package controller
 import (
 	"context"
 	"database/sql"
+	"log"
 
 	// "go-jet-env/database/membership/model"
 	"net/http"
@@ -29,17 +30,24 @@ func postSignup(c *gin.Context) {
 	c.HTML(http.StatusOK, "home.html", gin.H{"user": user})
 }
 
-// func postSignup(c *gin.Context, r database.RDBaccount, ctx context.Context) {
-// 	id := c.PostForm("user_id")
-// 	pw := c.PostForm("password")
-// 	user, err := r.Signup(ctx,id,pw)
-// 	// !上記が改変が必要な部分 Signup処理を渡す必要がある
-// 	if err != nil {
-// 		c.Redirect(301, "/signup")
-// 		return
-// 	}
-// 	c.HTML(http.StatusOK, "home.html", gin.H{"user": user})
-// }
+func wrap() {
+	r := gin.Default()
+
+	db, err := sql.Open("mysql", "webuser:webpass@tcp(db:3306)/membership")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	r.Use(func(c *gin.Context) {
+		c.Set("db", db)
+		c.Next()
+	})
+
+	r.POST("/signup", postSignup)
+
+	r.Run()
+}
+
 
 func getLogin(c *gin.Context) {
 	c.HTML(http.StatusOK, "login.html", nil)
@@ -58,16 +66,3 @@ func postLogin(c *gin.Context) {
 	}
 	c.HTML(http.StatusOK, "top.html", gin.H{"user": user})
 }
-
-// func postLogin(c *gin.Context, r database.RDBaccount, ctx context.Context) {
-// 	id := c.PostForm("user_id")
-// 	pw := c.PostForm("password")
-
-// 	user, err := r.Login(ctx, id, pw)
-// 	// !上記が改変が必要な部分  login処理を渡す必要がある
-// 	if err != nil {
-// 		c.Redirect(301, "/login")
-// 		return
-// 	}
-// 	c.HTML(http.StatusOK, "top.html", gin.H{"user": user})
-// }

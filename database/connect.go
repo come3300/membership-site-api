@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"log"
 
-	. "go-jet-env/database/membership/table"
+	// . "go-jet-env/database/membership/table"
 
 	_ "github.com/go-sql-driver/mysql"
 )
